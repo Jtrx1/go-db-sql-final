@@ -81,14 +81,24 @@ func TestSetStatus(t *testing.T) {
 	db, err := sql.Open("sqlite", "tracker.db")// настройте подключение к БД
 	require.NoError(t, err)
 	defer db.Close()
+	store := NewParcelStore(db)
+	parcel := getTestParcel()
+
+	
 	// add
 	// добавьте новую посылку в БД, убедитесь в отсутствии ошибки и наличии идентификатора
-
+	id, err:=store.Add(parcel)
+	require.NoError(t, err)
+	assert.NotEmpty(t, id)
 	// set status
 	// обновите статус, убедитесь в отсутствии ошибки
-
+	err=store.SetStatus(id, ParcelStatusSent)
+	require.NoError(t, err)
 	// check
 	// получите добавленную посылку и убедитесь, что статус обновился
+	checkStatus, err:=store.Get(id)
+	require.NoError(t, err)
+	assert.Equal(t, checkStatus.Status, ParcelStatusSent)
 }
 
 // TestGetByClient проверяет получение посылок по идентификатору клиента
