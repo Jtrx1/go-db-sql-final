@@ -132,7 +132,7 @@ func TestGetByClient(t *testing.T) {
 	for _, parcel := range storedParcels {
 
 		p, ok := parcelMap[parcel.Number]
-		require.Equal(t, true, ok)
+		require.True(t, ok)
 		require.Equal(t, parcel, p)
 	}
 }
